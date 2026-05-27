@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { supabase } from "./supabase";
 import Auth from "./pages/Auth";
 import PrivateRoute from "./components/PrivateRoute";
+import { useSession } from "../hooks/useSession";
 export default function App() {
   return (
     <Routes>
@@ -11,4 +12,10 @@ export default function App() {
       <Route path="/register" element={<Auth mode="register" />} />
     </Routes>
   );
+
+  const { session} = useSession();
+
+
+  <p>{session?.email}</p>
+
 }
