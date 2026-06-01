@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import InsertPost from "./UploadPost";
+import LogoutButton from"../components/LogoutButton";
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
@@ -21,8 +22,11 @@ export default function Home() {
     }
 
     return (
+
         <main>
             <h1>Dishly</h1>
+
+            <LogoutButton />
 
             <InsertPost />
 

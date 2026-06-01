@@ -48,7 +48,7 @@
   width: 100%;
   padding: 0.7rem;
   margin-top: 0.5rem;
-  background-color: #3ecf8e;
+  background-color: #2a5236;
   color: white;
   border: none;
   border-radius: 6px;
@@ -86,7 +86,7 @@
 
 .auth-links a {
   font-size: 0.875rem;
-  color: #3ecf8e;
+  color: #2a5236;
   text-decoration: none;
 }
 
