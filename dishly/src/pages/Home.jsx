@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import InsertPost from "./UploadPost";
+import "./Home.css";
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
@@ -21,18 +22,43 @@ export default function Home() {
     }
 
     return (
-        <main>
-            <h1>Dishly</h1>
+        <div className="home-page">
 
-            <InsertPost />
+            {/* SIDEBAR */}
+            <aside className="sidebar">
+                <h2>Dishly</h2>
+                <nav>
+                    <ul>
+                        <li>Home</li>
+                        <li>Explore</li>
+                        <li>Profile</li>
+                        <li>Settings</li>
+                    </ul>
+                </nav>
+            </aside>
 
-            <h2>Posts</h2>
+            {/* MAIN */}
+            <main className="main-content">
 
-            {posts.map((post) => (
-                <article key={post.id}>
-                    <p>{post.content}</p>
-                </article>
-            ))}
-        </main>
+                <InsertPost />
+
+                <h2>Posts</h2>
+
+                <div className="feed-grid">
+                    {posts.map((post) => (
+                        <article key={post.id} className="post-card">
+                            <div className="post-image">
+                                <p>Photo</p>
+                            </div>
+                            <div className="post-info">
+                                <p>{post.content}</p>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+
+            </main>
+
+        </div>
     );
 }
