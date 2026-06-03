@@ -21,6 +21,17 @@ export default function Home() {
         }
     }
 
+    async function deletePost(id) {
+        const { error } = await supabase
+            .from("posts")
+            .delete()
+            .eq("id", id);
+
+        if (!error) {
+            loadPosts();
+        }
+    }
+
     return (
 
         <main>
@@ -35,8 +46,14 @@ export default function Home() {
             {posts.map((post) => (
                 <article key={post.id}>
                     <p>{post.content}</p>
+
+                    <button onClick={() => deletePost(post.id)}>
+                        Delete
+                    </button>
                 </article>
             ))}
+
+
         </main>
     );
 }
