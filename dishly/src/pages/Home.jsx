@@ -20,6 +20,16 @@ export default function Home() {
             setPosts(data);
         }
     }
+    async function deletePost(id) {
+        const { error } = await supabase
+            .from("posts")
+            .delete()
+            .eq("id", id);
+
+        if (!error) {
+            loadPosts(); // Reload posts to reflect the deletion
+        }
+    }
 
     return (
         <div className="home-page">
@@ -53,6 +63,9 @@ export default function Home() {
                             <div className="post-info">
                                 <p>{post.content}</p>
                             </div>
+                            <button className="delete-button" onClick={() => deletePost(post.id)}>
+                                Delete
+                            </button>
                         </article>
                     ))}
                 </div>
