@@ -3,9 +3,11 @@ import { supabase } from "../supabase";
 
 export default function Explore() {
     const [posts, setPosts] = useState([]);
+    const [profiles, setProfiles] = useState([]);
 
     useEffect(() => {
         loadPosts();
+        loadProfiles();
     }, []);
 
     async function loadPosts() {
@@ -15,6 +17,24 @@ export default function Explore() {
             .order("id", { ascending: false });
 
         setPosts(data || []);
+    }
+
+    async function loadProfiles() {
+        const { data } = await supabase
+            .from("Profiel")
+            .select("*");
+
+        setProfiles(data || []);
+    }
+
+    function getUsername(userId) {
+        const profile = profiles.find((profile) => profile.user_id === userId);
+
+        if (profile) {
+            return profile.Username;
+        }
+
+        return "Onbekende gebruiker";
     }
 
     async function deletePost(id) {
@@ -32,6 +52,8 @@ export default function Explore() {
 
             {posts.map((post) => (
                 <article key={post.id}>
+                    <p>Geplaatst door: {getUsername(post.user_id)}</p>
+
                     {post.image_url && (
                         <img
                             src={post.image_url}
@@ -44,9 +66,7 @@ export default function Explore() {
 
                     <p>{post.content}</p>
 
-                    <button
-                        onClick={() => deletePost(post.id)}
-                    >
+                    <button onClick={() => deletePost(post.id)}>
                         Delete
                     </button>
                 </article>

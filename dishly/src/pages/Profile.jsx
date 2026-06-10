@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase.js";
 import { useSession } from "../hooks/useSession";
+import "../styles/Profile.css";
 
 export default function Profile() {
     const { session, loading: sessionLoading } = useSession();
@@ -77,7 +78,7 @@ export default function Profile() {
         const fileName = `${userId}-${Date.now()}`;
 
         const { error } = await supabase.storage
-            .from("avatars")
+            .from("Avatars")
             .upload(fileName, image);
 
         if (error) {
@@ -86,7 +87,7 @@ export default function Profile() {
         }
 
         const { data } = supabase.storage
-            .from("avatars")
+            .from("Avatars")
             .getPublicUrl(fileName);
 
         await supabase
