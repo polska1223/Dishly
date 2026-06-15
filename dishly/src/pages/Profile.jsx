@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase.js";
 import { useSession } from "../hooks/useSession";
+import "../styles/Profile.css";
 import "./Profile.css";
 
 export default function Profile() {
