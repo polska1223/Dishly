@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase.js";
 import { useSession } from "../hooks/useSession";
 import "../styles/Profile.css";
+import "./Profile.css";
 
 export default function Profile() {
     const { session, loading: sessionLoading } = useSession();
@@ -174,6 +175,9 @@ export default function Profile() {
 
             <p>Username: {username}</p>
             <p>Bio: {bio}</p>
+            <div className="back-link">
+                <a href="/">Terug naar Home</a>
+            </div>
         </main>
     );
 }
