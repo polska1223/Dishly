@@ -171,8 +171,10 @@ export default function Profile() {
                 <nav className="nav">
                     <a href="/">Home</a>
                     <a href="/explore">Explore</a>
+                    <a href="/upload">Plaatsen</a>
+                    <a href="/leftover">Leftover Finder</a>
                     <a href="/profile">Profiel</a>
-                    <LogoutButton/>
+                    <LogoutButton />
                 </nav>
             </header>
 
@@ -221,12 +223,6 @@ export default function Profile() {
                     <button type="button" onClick={uploadAvatar}>
                         Upload profielfoto
                     </button>
-                </section>
-
-                {/* ── NIEUW GERECHT PLAATSEN ── */}
-                <section className="panel">
-                    <h2>Nieuw recept plaatsen</h2>
-                    <UploadPost />
                 </section>
 
                 {/* ── EIGEN POSTS ── */}

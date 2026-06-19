@@ -78,6 +78,8 @@ export default function Explore() {
                 <nav className="nav">
                     <a href="/">Home</a>
                     <a href="/explore">Explore</a>
+                    <a href="/upload">Plaatsen</a>
+                    <a href="/leftover">Leftover Finder</a>
                     <a href="/profile">Profiel</a>
                 </nav>
             </header>
@@ -151,9 +153,7 @@ export default function Explore() {
                             )}
 
                             <div className="post-body">
-                                <p className="post-author">
-                                    {getUsername(post.user_id)}
-                                </p>
+                                <p className="post-author">Gemaakt door {getUsername(post.user_id)}</p>
                                 <h3>{post.title}</h3>
 
                                 {post.ingredients && (
