@@ -1,75 +1,163 @@
-/* Achtergrond */
-body {
+/* ─── Basis ─── */
+.home {
+    min-height: 100vh;
     background-color: #f5f5f0;
-    margin: 0;
     font-family: sans-serif;
     color: #333;
+    display: flex;
+    flex-direction: column;
 }
 
-main {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 24px 20px;
+/* ─── HEADER (volledige breedte) ─── */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 16px 40px;
 }
 
-/* Titel */
-h1 {
+.logo {
+    font-size: 22px;
+    font-weight: bold;
     color: #2d5a27;
-    font-size: 28px;
-    margin-bottom: 12px;
 }
 
-/* Nav */
-nav {
-    margin-bottom: 24px;
+.nav {
+    display: flex;
+    gap: 28px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #333;
     font-size: 15px;
 }
 
-nav a {
-    text-decoration: none;
+.nav a:hover {
     color: #2d5a27;
 }
 
-nav a:hover {
-    text-decoration: underline;
+/* ─── HERO ─── */
+.hero {
+    background-color: #2d5a27;
+    color: #ffffff;
+    text-align: center;
+    padding: 60px 20px;
 }
 
-/* Tussenkoppen */
-h2 {
-    color: #2d5a27;
-    font-size: 20px;
-    margin-top: 28px;
-    margin-bottom: 12px;
+.hero h1 {
+    font-size: 36px;
+    margin: 0 0 12px;
 }
 
-/* Post-kaart */
-article {
+.hero p {
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* ─── STATISTIEKEN ─── */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
     background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+    padding: 28px 20px;
 }
 
-article h3 {
-    margin: 8px 0 6px;
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
     color: #2d5a27;
 }
 
-article p {
-    margin: 4px 0;
+.stat-label {
+    font-size: 14px;
+    color: #777;
 }
 
-article img {
-    border-radius: 6px;
+/* ─── HOOFDINHOUD ─── */
+.content {
+    flex: 1;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.panel {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 30px;
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #2d5a27;
+}
+
+.empty {
+    color: #888;
+    font-style: italic;
+}
+
+/* ─── POSTS-RASTER ─── */
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.post-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
     display: block;
-    margin: 8px 0;
-    max-width: 100%;
-    height: auto;
 }
 
-/* Knoppen */
-button {
+.post-body {
+    padding: 16px;
+}
+
+.post-author {
+    font-size: 13px;
+    color: #888;
+    margin: 0 0 6px;
+}
+
+.post-body h3 {
+    margin: 0 0 8px;
+    color: #2d5a27;
+}
+
+.post-text {
+    margin: 0 0 14px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.delete-btn {
     background-color: #2d5a27;
     color: #fff;
     border: none;
@@ -77,22 +165,148 @@ button {
     border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
-    margin-top: 8px;
 }
 
-button:hover {
+.delete-btn:hover {
     background-color: #244a20;
 }
 
-/* Formulier (UploadPost) */
-input,
-textarea {
+/* ─── FORMULIER (UploadPost) ─── */
+.panel input,
+.panel textarea {
     width: 100%;
     box-sizing: border-box;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
-    margin-bottom: 8px;
     font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.panel form button {
+    background-color: #2d5a27;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.panel form button:hover {
+    background-color: #244a20;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+    background-color: #2d5a27;
+    color: #ffffff;
+    padding: 30px 20px;
+}
+
+.footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.footer-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.footer-nav a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.footer-copy {
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* ─── Like-knop ─── */
+.like-btn {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    color: #2d5a27;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.like-btn:hover {
+    border-color: #2d5a27;
+}
+
+.like-btn.liked {
+    background-color: #2d5a27;
+    color: #ffffff;
+    border-color: #2d5a27;
+}
+
+/* ─── Uitlog-knop ─── */
+.logout-btn {
+    background-color: #2d5a27;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #244a20;
+}
+
+/* ─── Responsief ─── */
+@media (max-width: 600px) {
+    .post-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        gap: 30px;
+    }
+
+    .header {
+        padding: 14px 20px;
+    }
+}
+
+/* ─── Zoekbalk in hero ─── */
+.hero-search {
+    margin-top: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 24px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.hero-search:focus {
+    outline: 2px solid #ffffff;
 }
