@@ -81,39 +81,6 @@ export default function Home() {
 
             {/* ── HOOFDINHOUD ── */}
             <main className="content">
-
-                {/* Trending gerechten */}
-                <section className="panel">
-                    <h2>Trending gerechten</h2>
-                    <div className="post-grid">
-                        {trendingPosts.map((post) => (
-                            <article key={post.id} className="post-card">
-                                {post.image_url && (
-                                    <img
-                                        className="post-image"
-                                        src={post.image_url}
-                                        alt={post.title}
-                                    />
-                                )}
-                                <div className="post-body">
-                                    <p className="post-author">{getUsername(post.user_id)}</p>
-                                    <h3>{post.title}</h3>
-                                    <p className="post-text">{post.content}</p>
-
-                                    <LikeButton postId={post.id} />
-
-                                    <button className="delete-btn" onClick={() => deletePost(post.id)}>
-                                        Verwijderen
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                    {trendingPosts.length === 0 && (
-                        <p className="empty">Nog geen trending gerechten.</p>
-                    )}
-                </section>
-
                 {/* Recente posts */}
                 <section className="panel">
                     <h2>Recente recepten</h2>
