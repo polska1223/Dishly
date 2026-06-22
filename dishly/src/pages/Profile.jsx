@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase.js";
 import { useSession } from "../hooks/useSession";
-import "../styles/Profile.css";
+import UploadPost from "./UploadPost";
 import "./Profile.css";
+import LogoutButton from "../components/LogoutButton";
 
 export default function Profile() {
     const { session, loading: sessionLoading } = useSession();
@@ -11,6 +12,7 @@ export default function Profile() {
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
     const [image, setImage] = useState(null);
+    const [myPosts, setMyPosts] = useState([]);
 
     const userId = session?.user?.id || session?.sub;
 
@@ -18,6 +20,7 @@ export default function Profile() {
         if (!session) return;
 
         fetchProfile();
+        fetchMyPosts();
     }, [session]);
 
     async function fetchProfile() {
@@ -37,6 +40,17 @@ export default function Profile() {
         } else {
             setProfile(null);
         }
+    }
+
+    // Haalt de eigen geplaatste gerechten op
+    async function fetchMyPosts() {
+        const { data } = await supabase
+            .from("posts")
+            .select("*")
+            .eq("user_id", userId)
+            .order("id", { ascending: false });
+
+        setMyPosts(data || []);
     }
 
     async function createProfile(event) {
@@ -73,6 +87,13 @@ export default function Profile() {
         }
     }
 
+    async function deletePost(id) {
+        const { error } = await supabase.from("posts").delete().eq("id", id);
+        if (!error) {
+            fetchMyPosts();
+        }
+    }
+
     async function uploadAvatar() {
         if (!image) return;
 
@@ -104,80 +125,140 @@ export default function Profile() {
     if (sessionLoading) return <p>Laden...</p>;
     if (!session) return <p>Niet ingelogd.</p>;
 
+    // Geen profiel: toon aanmaakformulier
     if (!profile) {
         return (
-            <main>
-                <h1>Profiel aanmaken</h1>
+            <div className="profile-page">
+                <header className="header">
+                    <div className="logo">Dishly</div>
+                    <nav className="nav">
+                        <a href="/">Home</a>
+                        <a href="/explore">Explore</a>
+                        <a href="/profile">Profiel</a>
+                    </nav>
+                </header>
 
-                <form onSubmit={createProfile}>
-                    <input
-                        placeholder="Username"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                    />
+                <main className="profile-content">
+                    <section className="panel">
+                        <h1>Profiel aanmaken</h1>
 
-                    <br />
-
-                    <textarea
-                        placeholder="Bio"
-                        value={bio}
-                        onChange={(event) => setBio(event.target.value)}
-                    />
-
-                    <br />
-
-                    <button type="submit">Profiel aanmaken</button>
-                </form>
-            </main>
+                        <form onSubmit={createProfile}>
+                            <input
+                                placeholder="Username"
+                                value={username}
+                                onChange={(event) => setUsername(event.target.value)}
+                            />
+                            <textarea
+                                placeholder="Bio"
+                                value={bio}
+                                onChange={(event) => setBio(event.target.value)}
+                            />
+                            <button type="submit">Profiel aanmaken</button>
+                        </form>
+                    </section>
+                </main>
+            </div>
         );
     }
 
+    // Wel een profiel: toon profiel + eigen posts
     return (
-        <main>
-            <h1>Mijn profiel</h1>
+        <div className="profile-page">
 
-            {profile.avatar_url && (
-                <img src={profile.avatar_url} alt="Avatar" width="150" />
-            )}
+            {/* ── HEADER ── */}
+            <header className="header">
+                <div className="logo">Dishly</div>
+                <nav className="nav">
+                    <a href="/">Home</a>
+                    <a href="/explore">Explore</a>
+                    <a href="/upload">Plaatsen</a>
+                    <a href="/leftover">Leftover Finder</a>
+                    <a href="/profile">Profiel</a>
+                    <LogoutButton />
+                </nav>
+            </header>
 
-            <form onSubmit={updateProfile}>
-                <input
-                    placeholder="Username"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                />
+            <main className="profile-content">
 
-                <br />
+                {/* ── PROFIELKAART ── */}
+                <section className="panel profile-header">
+                    {profile.avatar_url && (
+                        <img
+                            className="avatar"
+                            src={profile.avatar_url}
+                            alt="Avatar"
+                        />
+                    )}
+                    <div className="profile-info">
+                        <h1>{username}</h1>
+                        <p className="profile-bio">{bio}</p>
+                        <p className="profile-count">
+                            {myPosts.length} geplaatste gerecht(en)
+                        </p>
+                    </div>
+                </section>
 
-                <textarea
-                    placeholder="Bio"
-                    value={bio}
-                    onChange={(event) => setBio(event.target.value)}
-                />
+                {/* ── PROFIEL BEWERKEN ── */}
+                <section className="panel">
+                    <h2>Profiel bewerken</h2>
+                    <form onSubmit={updateProfile}>
+                        <input
+                            placeholder="Username"
+                            value={username}
+                            onChange={(event) => setUsername(event.target.value)}
+                        />
+                        <textarea
+                            placeholder="Bio"
+                            value={bio}
+                            onChange={(event) => setBio(event.target.value)}
+                        />
+                        <button type="submit">Profiel opslaan</button>
+                    </form>
 
-                <br />
+                    <h3>Profielfoto uploaden</h3>
+                    <input
+                        type="file"
+                        onChange={(event) => setImage(event.target.files[0])}
+                    />
+                    <button type="button" onClick={uploadAvatar}>
+                        Upload profielfoto
+                    </button>
+                </section>
 
-                <button type="submit">Profiel opslaan</button>
-            </form>
+                {/* ── EIGEN POSTS ── */}
+                <section className="panel">
+                    <h2>Mijn gerechten</h2>
 
-            <h2>Profielfoto uploaden</h2>
+                    {myPosts.length === 0 && (
+                        <p className="empty">Je hebt nog geen gerechten geplaatst.</p>
+                    )}
 
-            <input
-                type="file"
-                onChange={(event) => setImage(event.target.files[0])}
-            />
+                    <div className="post-grid">
+                        {myPosts.map((post) => (
+                            <article key={post.id} className="post-card">
+                                {post.image_url && (
+                                    <img
+                                        className="post-image"
+                                        src={post.image_url}
+                                        alt={post.title}
+                                    />
+                                )}
+                                <div className="post-body">
+                                    <h3>{post.title}</h3>
+                                    <p className="post-text">{post.content}</p>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => deletePost(post.id)}
+                                    >
+                                        Verwijderen
+                                    </button>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </section>
 
-            <button type="button" onClick={uploadAvatar}>
-                Upload profielfoto
-            </button>
-
-            <h2>Mijn gegevens</h2>
-
-            <p>Username: {username}</p>
-            <p>Bio: {bio}</p>
-            <div className="back-link">
-                <a href="/">Terug naar Home</a>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }

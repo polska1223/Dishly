@@ -1,13 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import { useSession } from "../hooks/useSession";
+import "./UploadPost.css";
 
 export default function UploadPost() {
     const { session } = useSession();
+    const navigate = useNavigate();
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [ingredients, setIngredients] = useState("");
+    const [category, setCategory] = useState("Diner");
+    const [message, setMessage] = useState("");
+
+    const categories = ["Ontbijt", "Lunch", "Diner", "Snack", "Dessert"];
 
     async function addPost(event) {
         event.preventDefault();
@@ -18,45 +26,99 @@ export default function UploadPost() {
             title: title,
             content: content,
             image_url: imageUrl,
+            ingredients: ingredients,
+            category: category,
             user_id: userId,
         });
 
-        console.log(error);
-
-        if (!error) {
-            setTitle("");
-            setContent("");
-            setImageUrl("");
+        if (error) {
+            console.log(error);
+            setMessage("Fout: " + error.message);
+            return;
         }
+
+        // Velden leegmaken en terug naar home
+        setTitle("");
+        setContent("");
+        setImageUrl("");
+        setIngredients("");
+        setMessage("Recept geplaatst!");
+
+        navigate("/");
     }
 
     return (
-        <form onSubmit={addPost}>
-            <input
-                placeholder="Titel"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-            />
+        <div className="upload-page">
 
-            <br />
+            {/* ── HEADER ── */}
+            <header className="header">
+                <div className="logo">Dishly</div>
+                <nav className="nav">
+                    <a href="/">Home</a>
+                    <a href="/explore">Explore</a>
+                    <a href="/UploadPost">Plaatsen</a>
+                    <a href="/leftover">Leftover Finder</a>
+                    <a href="/profile">Profiel</a>
+                </nav>
+            </header>
 
-            <input
-                placeholder="Foto link"
-                value={imageUrl}
-                onChange={(event) => setImageUrl(event.target.value)}
-            />
+            {/* ── FORMULIER ── */}
+            <main className="upload-content">
+                <section className="panel">
+                    <h1>Nieuw recept plaatsen</h1>
 
-            <br />
+                    <form onSubmit={addPost}>
+                        <label>Titel</label>
+                        <input
+                            placeholder="Naam van het gerecht"
+                            value={title}
+                            onChange={(event) => setTitle(event.target.value)}
+                        />
 
-            <textarea
-                placeholder="Beschrijving"
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-            />
+                        <label>Foto link</label>
+                        <input
+                            placeholder="https://..."
+                            value={imageUrl}
+                            onChange={(event) => setImageUrl(event.target.value)}
+                        />
 
-            <br />
+                        <label>Categorie</label>
+                        <select
+                            value={category}
+                            onChange={(event) => setCategory(event.target.value)}
+                        >
+                            {categories.map((item) => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
 
-            <button type="submit">Post plaatsen</button>
-        </form>
+                        <label>Ingrediënten</label>
+                        <input
+                            placeholder="bijv. kaas, ei, brood"
+                            value={ingredients}
+                            onChange={(event) => setIngredients(event.target.value)}
+                        />
+                        <p className="hint">
+                            Scheid ingrediënten met komma's. Dit helpt anderen je
+                            gerecht te vinden via de Leftover Finder.
+                        </p>
+
+                        <label>Beschrijving</label>
+                        <textarea
+                            placeholder="Beschrijf de bereiding..."
+                            value={content}
+                            onChange={(event) => setContent(event.target.value)}
+                        />
+
+                        <button type="submit">Recept plaatsen</button>
+
+                        {message && <p className="upload-message">{message}</p>}
+                    </form>
+                </section>
+            </main>
+
+        </div>
     );
 }
