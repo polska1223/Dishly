@@ -103,13 +103,14 @@ export default function Home() {
                                 <div className="post-body">
                                     <p className="post-author">Gemaakt door {getUsername(post.user_id)}</p>
                                     <h3>{post.title}</h3>
+                                    {post.ingredients && (
+                                        <p className="post-ingredients">
+                                            Ingrediënten: {post.ingredients}
+                                        </p>
+                                    )}
                                     <p className="post-text">{post.content}</p>
 
                                     <LikeButton postId={post.id} />
-
-                                    <button className="delete-btn" onClick={() => deletePost(post.id)}>
-                                        Verwijderen
-                                    </button>
                                 </div>
                             </article>
                         ))}
